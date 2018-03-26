@@ -1,0 +1,82 @@
+3.1.11 Section Review 1, 2, 3, 4
+
+1. -35d ; decimal
+   DDh ; hexadecimal
+   335o ; Octane
+   1011101b ; Binary
+2. No, a 0 is required in the beginning of the integer.
+3. No it has the same precedence. 
+4. 50 MOD 4+(12*7) - 1/2 = 86
+
+3.2.4 Section 4, 5
+4. EAX 
+5. INVOKE ExitProcess, 0
+
+3.3.3 Section Review 1, 2, 3, 4
+1. The assembler prduces an object file which contains machine language, and a listing file which contains a copy of the programs code, with line numbers, the numeric address of each instruction, and a symbol table.
+2.True
+3.True
+4. The OS loader.
+
+3.4.13 Section Review, Questions 1, 2, 3, 4, 5
+
+1. word1 WORD ?
+2. byte1 BYTE ?
+3. byte2 SBYTE ?
+4. word2 QWORD ?
+5. SDWORD
+
+3.5.5 Section Review Question 3
+
+3. ArraySize = ($-myArray)/2
+
+3.9.1 Short Answer, Questions 4, 5, 6, 25
+
+1. Because the assembler itself does not have a language, it simply converts programming code into machine code.
+5. Litttle Endian is a system of ordering that goes from low to high. When storing bytes, the least significant byte is stores at the first memory address allocated for the data. In big Endan Order, the least significant byte is stored in the last memory adress allocated for the data.	
+6. A symbolic constant does not take up storage and its value can be changed in a procedural manner and can be redefined multiple times throughout the program as opposed to literals, which are defined at runtime and cannot be changed.
+25. SDWORD
+
+3.9.2 Algorithm Workbench, Questions 4, 7, 13
+4. This tells me that the assembler does not type check to be sure that the number you are initializing a variable to is negative or positive.
+7.
+
+ExitProcess proto
+.data
+myArray dword 120 DUP(?)
+.code
+main proc
+
+   call ExitProcess
+main endp
+end
+
+13.
+ExitProcess proto
+.data
+myString byte 500 DUP("TEST")
+.code
+main proc
+   call ExitProcess
+main endp
+end
+
+3.10 Programming Exercises, Pick any 1 exercise
+ExitProcess proto
+.data
+sum qword 0
+.code
+main proc
+  mov eax,10
+  mov ebx,3
+  mov ecx,1
+  mov edx,5
+  add ebx,eax ;ebx = 13
+  add ecx,edx ; ecx = 6
+  sub ebx,ecx ; 13 - 6
+  mov eax,ebx ; eax = 7
+
+   mov  ecx,0
+   call ExitProcess
+main endp
+end
