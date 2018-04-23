@@ -1,0 +1,107 @@
+INCLUDE Irvine32.inc
+
+.data
+CaseTable BYTE 'A'			; lookup value
+DWORD AndProcess			; address of procedure
+EntrySize = ($ - CaseTable)
+BYTE 'B'
+DWORD OrProcess
+BYTE 'C'
+DWORD NotProcess
+BYTE 'D'
+DWORD XorProcess
+
+NumberOfEntries = ($ - CaseTable) / EntrySize
+prompt BYTE "Press capital A for 'x AND y', B for 'x OR y', C for 'NOT x', D for 'x XOR y', or anything else to exit the program: ",0
+msgA BYTE "x AND y",0
+msgB BYTE "x OR y",0
+msgC BYTE "NOT x",0
+msgD BYTE "x XOR y",0
+hexVal DWORD ?
+
+andPrompt BYTE "Enter two hexadecimal integers and this process will AND them.",0
+orPrompt BYTE "Enter two hexadecimal integers and this process will OR them.",0
+notPrompt BYTE "Enter a hexadecimal integer and this process will NOT it.",0
+xorPrompt BYTE "Enter two hexadecimal integers and this process will XOR them.",0
+
+.code
+main PROC
+mov edx,OFFSET prompt			; ask user for input
+call WriteString				; Display Prompt
+call CRLF
+call ReadChar					; read character into AL
+mov ebx,OFFSET CaseTable		; point EBX to the table
+mov ecx,NumberOfEntries			; loop counter
+
+L1:
+cmp al,[ebx] ; match found?
+jne L2 ; no: continue
+call NEAR PTR [ebx + 1] ;yes: call the procedure
+						;This CALL instruction calls the procedure whose 
+						;address is stored in the memory location referenced
+						;by EBX+1. An indirect call such as this requires 
+						;the NEAR PTR operator.
+
+jmp L3					; exit the search
+
+L2:
+add ebx,EntrySize		; point to the next entry
+loop L1					; repeat until ECX = 0
+
+L3:
+exit
+main ENDP
+
+
+;Each of the following procedures moves a different string offset to EDX:
+AndProcess PROC
+mov edx,OFFSET andPrompt
+call WriteString		; display message
+call CRLF				;New Line
+call ReadHex			;User enters hex integer 
+mov hexVal,eax			;User's hex integer is moved into a data variable
+call ReadHex			;User enters new hex integer 
+AND eax,hexVal			;AND operation is performed on 1st hex integer and 2nd hex integer
+call WriteHex			;Result is printed 
+call crlf
+ret
+AndProcess ENDP
+
+OrProcess PROC
+mov edx,OFFSET orPrompt
+call WriteString		;display message
+call CRLF				;New Line
+call ReadHex			;User enters hex integer 
+mov hexVal,eax			;User's hex integer is moved into a data variable
+call ReadHex			;User enters new hex integer 
+OR eax,hexVal			;OR operation is performed on 1st hex integer and 2nd hex integer
+call WriteHex			;Result is printed 
+call crlf
+ret
+OrProcess ENDP
+
+NotProcess PROC
+mov edx,OFFSET notPrompt
+call WriteString		;display message
+call CRLF				;New Line
+call ReadHex			;User enters hex integer 
+NOT eax					;NOT operation is performed on hex integer
+call WriteHex			;Result is printed 
+call crlf
+ret
+NotProcess ENDP
+
+XorProcess PROC
+mov edx,OFFSET xorPrompt
+call WriteString		;display message
+call CRLF				;New Line
+call ReadHex			;User enters hex integer 
+mov hexVal,eax			;User's hex integer is moved into a data variable
+call ReadHex			;User enters new hex integer 
+XOR eax,hexVal			;OR operation is performed on 1st hex integer and 2nd hex integer
+call WriteHex			;Result is printed 
+call crlf
+ret
+XorProcess ENDP
+
+END main
