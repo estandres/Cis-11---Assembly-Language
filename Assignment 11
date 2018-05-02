@@ -1,0 +1,42 @@
+INCLUDE Irvine32.inc
+
+.data
+myArray DWORD 1,2,3,4,5,6
+sizeOfElement DWORD ($-myArray)/6
+.code
+main proc
+mov ecx,6							;set loop counter to SIZEOF myArray
+mov ebx,0
+L1:								;start loop
+	mov eax, myArray[ebx]
+	Call WriteInt						;print next array value ","
+	add ebx, sizeOfElement
+LOOP L1								;end loop
+Call CRLF
+mov ecx,3							;set loop counter to SIZEOF myArray
+mov ebx,0
+mov edx,0
+L2:								;start loop
+								;swap next two array values
+	mov eax, myArray[ebx]		;eax = 1
+	add edx, sizeOfElement		
+	mov esi, myArray[edx]		;edx = 2
+	mov myArray[ebx], esi		;myArray[0] = 2
+	mov myArray[edx], eax		;myArray[1] = 1
+	add ebx, sizeOfElement		
+	add ebx, sizeOfElement
+	add edx, sizeOfElement
+LOOP L2								;end loop
+
+mov ecx,6							;set loop counter to SIZEOF myArray
+mov ebx,0
+L3:								;start loop
+	mov eax, myArray[ebx]
+	Call WriteInt						;print next array value ","
+	add ebx, sizeOfElement
+LOOP L3								;end loop
+Call CRLF					
+
+Invoke ExitProcess,0
+main ENDP
+END main
