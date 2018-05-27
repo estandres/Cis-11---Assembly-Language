@@ -1,0 +1,79 @@
+Crlf proto
+WriteInt64 proto
+ExitProcess proto
+ReadInt64 proto
+					;Given an array of 8-byte integers, sort the array using the Bubble 
+					;Sort algorithm. Your program should print the array before and after 
+					;the sort takes place. If you are unable to attend the lecture where 
+					;the algorithm is presented, you can find it here: 
+					;https://www.geeksforgeeks.org/bubble-sort/
+.data
+myArray QWORD 5, 1, 4, 2, 8
+arraySize QWORD ($-myArray)/8
+.code
+main proc
+mov rbx, 0
+mov rax, 0
+mov r8, 0
+mov r9, 0
+
+mov rcx, arraySize
+	PRINTLOOP1:
+		mov rax, myArray[rbx]
+		Call WriteInt64
+		add rbx, 8
+	LOOP PRINTLOOP1
+		Call ReadInt64
+
+	BEGIN:
+		mov r8, 0
+		mov r9, 0
+		mov rax, 8
+		mov r10, 0
+
+		mov r8, myArray[r9]		; r8 = 5	;  
+		mov rbx, myArray[rax]	; rbx = 4	;
+
+		cmp r8, rbx
+		JLE ITERATE
+		JG SWAP
+		SWAP:
+			mov r10, 1
+			mov r8, myArray[r9]		; r8 = 5; r8 = 5; 
+			mov rbx, myArray[rax]	; rbx = 1; rbx = 4;
+			mov myArray[r9], rbx	;myArray[r9] =  1
+			mov myArray[rax], r8	;myArray[rax] = 5						;	
+									;1,5,4,2,8
+		ITERATE:
+			add r9, 8				;myArray[r9] -> 5;
+			add rax, 8				;myArray[rax] -> 4; 
+			mov r8, myArray[r9]		; r8 = 5	;  
+			mov rbx, myArray[rax]	; rbx = 4	;
+
+			cmp r8,	myArray[32]		;if end of list is reached, jumps to L3	
+			JE SWAPCHECK
+
+			cmp r8, rbx				;
+			JLE ITERATE					;if leftOp <= rightOp, jumps to L2
+			JG SWAP					;if leftOp > rightOp, jumps back to L1
+
+		SWAPCHECK:					;Checks to see if a swap had taken place within the code.
+			cmp r10, 1				;r10 is used as a flag. If r10 = 1, jumps back to beginning
+			JE BEGIN
+
+mov rbx, 0
+mov rax, 0
+mov r8, 0
+mov r9, 0
+
+mov rcx, arraySize
+	PRINTLOOP2:
+		mov rax, myArray[rbx]
+		Call WriteInt64
+		add rbx, 8
+	LOOP PRINTLOOP2
+		Call ReadInt64
+
+call ExitProcess
+main ENDP
+END
