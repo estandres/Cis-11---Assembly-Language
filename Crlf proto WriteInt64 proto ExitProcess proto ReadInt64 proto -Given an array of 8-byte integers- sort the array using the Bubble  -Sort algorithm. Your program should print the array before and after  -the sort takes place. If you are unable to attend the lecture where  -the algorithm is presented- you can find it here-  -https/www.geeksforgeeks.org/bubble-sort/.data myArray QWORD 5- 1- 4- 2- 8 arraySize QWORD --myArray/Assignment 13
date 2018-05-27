@@ -56,16 +56,15 @@ mov rcx, arraySize
 			cmp r8, rbx				;
 			JLE ITERATE					;if leftOp <= rightOp, jumps to L2
 			JG SWAP					;if leftOp > rightOp, jumps back to L1
-		
 
-		SWAPCHECK:
-			cmp r10, 1
+		SWAPCHECK:					;Checks to see if a swap had taken place within the code.
+			cmp r10, 1				;r10 is used as a flag. If r10 = 1, jumps back to beginning
 			JE BEGIN
 
 mov rbx, 0
 mov rax, 0
-mov rdx, 0
-mov rsi, 0
+mov r8, 0
+mov r9, 0
 
 mov rcx, arraySize
 	PRINTLOOP2:
